@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import { Navbar, NavbarBrand } from 'reactstrap';
 import Menu from './components/MenuComponent';
+import { DISHES } from './shared/dishes';
 import './App.css';
 
 function App() {
+
+  const [dishes, setDishes] = useState(DISHES);
+
   return (
     <div>
      {/*  <header className="App-header">
@@ -26,7 +30,7 @@ function App() {
           <NavbarBrand href="/">ReactJS</NavbarBrand>
         </div>
       </Navbar>
-      <Menu />
+      <Menu dishes = {dishes}/>
     </div>
   );
 }
