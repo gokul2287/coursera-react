@@ -5,6 +5,7 @@ import Menu from './components/MenuComponent';
 import { DISHES } from './shared/dishes';
 import './App.css';
 
+
 function App() {
 
   const [dishes, setDishes] = useState(DISHES);
@@ -30,7 +31,7 @@ function App() {
           <NavbarBrand href="/">ReactJS</NavbarBrand>
         </div>
       </Navbar>
-      <Menu dishes = {dishes}/>
+      <Menu dishes = {dishes} /> 
     </div>
   );
 }
