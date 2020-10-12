@@ -1,15 +1,16 @@
 // This is acting as a container componenet 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Menu from './MenuComponent';
 import DishDetails from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 
 import Home from './HomeComponent';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
-import { connect, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { addComment } from '../redux/ActionCreators';
 
 // const mapStateToProps = state => {
 //   return {
@@ -22,7 +23,10 @@ import { connect, useSelector } from 'react-redux';
 
 function Main() {
   
-  const dd = useSelector(state =>state)
+  const dd = useSelector(state =>state) 
+  const disptch = useDispatch(dispatch => ({
+    addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment))
+  }));
   //Defining state 
   // const [dishes, setDishes] = useState(DISHES);
   // const [comments, setComments] = useState(COMMENTS);
@@ -47,7 +51,8 @@ function Main() {
   const DishWithID = ({match}) => {
     return (
       <DishDetails dish = {dd.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]}
-      comments = {dd.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}>
+      comments = {dd.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}
+      addComment = {disptch.addComment} >
       </DishDetails>
     );
   }
