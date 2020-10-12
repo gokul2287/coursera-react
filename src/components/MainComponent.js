@@ -9,7 +9,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
 import { useSelector, useDispatch } from 'react-redux';
-import { addComment, fetchDishes } from '../redux/ActionCreators';
+import { addComment, fetchDishes, fetchPromos, fetchComments } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 
 // const mapStateToProps = state => {
@@ -24,9 +24,11 @@ import { actions } from 'react-redux-form';
 function Main(props) {
   
   const dd = useSelector(state =>state) 
-  const disptch = useDispatch(dispatch => ({
+  useDispatch(dispatch => ({
     addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
     fetchDishes: () => {dispatch(fetchDishes())},
+    fetchComments: () => {dispatch(fetchComments())},
+    fetchPromotions: () => {dispatch(fetchPromos())},
     resetFeedbackForm: () => { dispatch(actions.reset('feedback'))}
   }));
   //Defining state 
@@ -44,6 +46,8 @@ function Main(props) {
 
   useEffect(() => {
     fetchDishes();
+    fetchComments();
+    fetchPromos();
   })
 
   const HomePage = () => {
@@ -51,7 +55,9 @@ function Main(props) {
       <Home dish = {dd.dishes.dishes.filter((dish) => dish.featured)[0]}
       dishesLoading = {dd.dishes.isLoading}
       dishesErrMess = {dd.dishes.errMess}
-      promotion = {dd.promotions.filter((promo) => promo.featured)[0]}
+      promotion = {dd.promotions.promotions.filter((promo) => promo.featured)[0]}
+      promosLoading  = {dd.promotions.isLoading}
+      promosErrMess = {dd.promotions.errMess}
       leader = {dd.leaders.filter((lead)=> lead.featured)[0]}></Home>
     );
   } 
@@ -61,8 +67,9 @@ function Main(props) {
       <DishDetails dish = {dd.dishes.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]}
       isLoading = {dd.dishes.isLoading}
       errMess = {dd.dishes.errMess}
-      comments = {dd.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}
-      addComment = {disptch.addComment} >
+      comments = {dd.comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}
+      addComment = {addComment} 
+      commentsErrMess = {dd.comments.errMess}>
       </DishDetails>
     );
   }
