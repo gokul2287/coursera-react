@@ -29,7 +29,7 @@ function DishDetails (props) {
     };
     
 
-    const renderComments = (comment, addComment, dishId) => {
+    const renderComments = (comment, postComment, dishId) => {
         console.log("comm",comment);
         if(comment != null) {   
             console.log("inside render comments ");     
@@ -50,7 +50,7 @@ function DishDetails (props) {
                     <h4> Comments </h4>
                     <ul className='list-unstyled'>
                         {commentDetails}
-                        <CommentForm dishId = {dishId} addComment = {addComment}></CommentForm>
+                        <CommentForm dishId = {dishId} postComment = {postComment}></CommentForm>
                     </ul>
                 </div>
             );
@@ -100,7 +100,7 @@ function DishDetails (props) {
                         { renderDish (props.dish)}
                     </div>
                     <div className="col-xs-12 col-md-5 m-1">
-                        { renderComments (props.comments, props.addComment, props.dish.id) }
+                        { renderComments (props.comments, props.postComment, props.dish.id) }
                     </div>
                 </div>
             </div>
@@ -130,7 +130,7 @@ export function CommentForm (props) {
 
     const handleSubmit = (values) =>  {
         console.log("Current state is : ", JSON.stringify(values));
-        props.addComment(props.dishId, values.rating, values.author, values.comment);
+        props.postComment(props.dishId, values.rating, values.author, values.comment);
     }
    
 

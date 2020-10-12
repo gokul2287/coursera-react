@@ -9,7 +9,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
 import { useSelector, useDispatch } from 'react-redux';
-import { addComment, fetchDishes, fetchPromos, fetchComments } from '../redux/ActionCreators';
+import { postComment, fetchDishes, fetchPromos, fetchComments } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 
 // const mapStateToProps = state => {
@@ -25,7 +25,7 @@ function Main(props) {
   
   const dd = useSelector(state =>state) 
   useDispatch(dispatch => ({
-    addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
+    postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
     fetchDishes: () => {dispatch(fetchDishes())},
     fetchComments: () => {dispatch(fetchComments())},
     fetchPromotions: () => {dispatch(fetchPromos())},
@@ -50,8 +50,6 @@ function Main(props) {
     fetchPromos();
   })
 
- 
-
   const HomePage = () => {
     return (
       <Home dish = {dd.dishes.dishes.filter((dish) => dish.featured)[0]}
@@ -70,7 +68,7 @@ function Main(props) {
       isLoading = {dd.dishes.isLoading}
       errMess = {dd.dishes.errMess}
       comments = {dd.comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}
-      addComment = {addComment} 
+      postComment = {postComment} 
       commentsErrMess = {dd.comments.errMess}>
       </DishDetails>
     );
