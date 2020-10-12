@@ -50,6 +50,8 @@ function Main(props) {
     fetchPromos();
   })
 
+ 
+
   const HomePage = () => {
     return (
       <Home dish = {dd.dishes.dishes.filter((dish) => dish.featured)[0]}
