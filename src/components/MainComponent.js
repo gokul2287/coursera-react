@@ -1,16 +1,15 @@
 // This is acting as a container componenet 
-import React from 'react';
+import React, {useEffect} from 'react';
 import Menu from './MenuComponent';
 import DishDetails from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
-
 import Home from './HomeComponent';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
 import { useSelector, useDispatch } from 'react-redux';
-import { addComment } from '../redux/ActionCreators';
+import { addComment, fetchDishes } from '../redux/ActionCreators';
 
 // const mapStateToProps = state => {
 //   return {
@@ -21,11 +20,12 @@ import { addComment } from '../redux/ActionCreators';
 //   }
 // }
 
-function Main() {
+function Main(props) {
   
   const dd = useSelector(state =>state) 
   const disptch = useDispatch(dispatch => ({
-    addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment))
+    addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
+    fetchDishes: () => {dispatch(fetchDishes())}
   }));
   //Defining state 
   // const [dishes, setDishes] = useState(DISHES);
@@ -38,11 +38,17 @@ function Main() {
   //Run useEffect on State change - lifecycle  
   // useEffect(() => {
   //   console.log("State change")  ;
-  // },[selectedDish]);
+  // },[selectedDish]); 
+
+  useEffect(() => {
+    fetchDishes();
+  })
 
   const HomePage = () => {
     return (
-      <Home dish = {dd.dishes.filter((dish) => dish.featured)[0]}
+      <Home dish = {dd.dishes.dishes.filter((dish) => dish.featured)[0]}
+      dishesLoading = {dd.dishes.isLoading}
+      dishesErrMess = {dd.dishes.errMess}
       promotion = {dd.promotions.filter((promo) => promo.featured)[0]}
       leader = {dd.leaders.filter((lead)=> lead.featured)[0]}></Home>
     );
@@ -50,7 +56,9 @@ function Main() {
 
   const DishWithID = ({match}) => {
     return (
-      <DishDetails dish = {dd.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]}
+      <DishDetails dish = {dd.dishes.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]}
+      isLoading = {dd.dishes.isLoading}
+      errMess = {dd.dishes.errMess}
       comments = {dd.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}
       addComment = {disptch.addComment} >
       </DishDetails>
